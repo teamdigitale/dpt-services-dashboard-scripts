@@ -1,0 +1,66 @@
+---
+
+version: '3.2'
+services:
+
+  # Ingestion scripts
+  pdnd-dashboard-ingestion-scripts:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: pdnd-dashboard-ingestion-scripts
+    image: teamdigitale/pdnd-dashboard-scripts:snapshot
+    env_file:
+      - .env.example
+    stdin_open: true
+    tty: true
+    depends_on:
+      - pdnd-dashboard-mongodb
+    volumes:
+      - .:/opt/ingestion_scripts
+
+  # Metabase
+  pdnd-dashboard-metabase:
+    container_name: pdnd-dashboard-metabase
+    image: metabase/metabase:v0.34.0
+    stdin_open: true
+    tty: true
+    ports:
+      - 3000:3000/tcp
+    env_file:
+      - .env.example
+    volumes:
+      - metabase-data:/metabase-data
+    depends_on:
+      - pdnd-dashboard-postgres
+      - pdnd-dashboard-mongodb
+
+  # MongoDB
+  pdnd-dashboard-mongodb:
+    image: bitnami/mongodb:4.2.2-debian-10-r0
+    container_name: pdnd-dashboard-mongo
+    ports:
+      - 27017:27017
+    env_file:
+      - .env.example
+    volumes:
+      - db-data:/data/db
+      - mongo-config:/data/configdb
+
+  # Postgres
+  pdnd-dashboard-postgres:
+    image: bitnami/postgresql:11.6.0-debian-10-r0
+    container_name: pdnd-dashboard-postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pg_data
+    env_file:
+      - .env.example
+
+volumes:
+  pg_data:
+  db-data:
+  mongo-config:
+  metabase-data:
+  mongoclient:

@@ -1,0 +1,9 @@
+﻿Comune	Regione	Provincia	"Codice Belfiore"	"Codice ISTAT"	Popolazione	Fase	"Postazioni di Lavoro"	"Installazione prevista dal"	"Installazione prevista al"	"Data Prima Installazione"	"Data Ultima Installazione"	"Data Installazione Prevista"	"Stato Comune"	"Data Prima Attivazione Smart Card Operatore"	"Smart Card Operatore Attivate"	"Data Prima Emissione"	"Totale CIE Emesse"	"Totale CIE Emesse Ultimi 3 Mesi"	"Totale CIE in Spedizione"	"Minuti Impiegati per Emissione"	"Percentuale CIE Emesse Ultimi 3 Mesi"	"Utilizzo AgendaCIE"	"Totale Cittadini Registrati in AgendaCIE"
+Milano	Lombardia	MI	F205	015146	1262101	"Fase 1"	76	05/09/2016	09/09/2016	05/09/2016	30/04/2019		Installato	05/09/2016	192	09/09/2016	412112	370915	3112	9	91.09	NO	
+Palermo	Sicilia	PA	G273	082053	654987	"Fase 2"	0	26/06/2017	07/07/2017				Sospeso									NO	
+Genova	Liguria	GE	D969	010025	582320	"Fase 1"	30	12/09/2016	16/09/2016	14/09/2016	19/03/2018		Installato	14/09/2016	127	17/10/2016	43464	23405	1583	11	96.13	SI	693
+Bologna	Emilia-Romagna	BO	A944	037006	380635	"Fase 1"	24	01/08/2016	05/08/2016	03/08/2016	08/02/2018		Installato	18/08/2016	122	07/10/2016	81812	67384	1921	10	105.78	NO	
+Firenze	Toscana	FI	D612	048017	366039	"Fase 1"	22	18/07/2016	22/07/2016	18/07/2016	06/06/2018		Installato	18/07/2016	46	19/07/2016	54892	41759	1913	10	100.13	SI	3068
+"Reggio di Calabria"	Calabria	RC	H224	080063	180686	"Fase 2"	12	26/04/2017	05/05/2017	24/05/2017	24/05/2017		Installato	24/05/2017	27	22/06/2017	41620	35848	244	9	89.15	SI	211
+"Reggio nell'Emilia"	Emilia-Romagna	RE	H223	035033	163928	"Fase 2"	13	26/04/2017	05/05/2017	19/07/2017	31/07/2017		Installato	25/08/2017	31	04/01/2018	35808	29311	970	11	110.6	NO	
+Cesarò	Sicilia	ME	C568	083017	2552	"Fase 4"	1	12/04/2018	16/04/2018	12/04/2018	12/04/2018		Installato	12/04/2018	3	08/05/2018	373	307	6	12	72.17	NO	
