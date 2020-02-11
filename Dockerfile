@@ -17,7 +17,12 @@ RUN mkdir -p ${SCRIPTS_HOME}
 RUN chown -R ${SCRIPTS_USER}.${SCRIPTS_USER} ${SCRIPTS_HOME}
 
 # Copy the scripts to the container
-COPY . .
+COPY anpr anpr
+COPY cie cie
+COPY common common
+COPY devitalia devitalia
+COPY spid spid
+COPY requirements.txt .
 
 # Install requirements
 RUN pip install --upgrade pip
