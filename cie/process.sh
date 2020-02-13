@@ -4,14 +4,14 @@ set -e
 
 echo "<run cie>"
 
-CIE_ENV=${CIE_ENV:-unset}
-CIE_DATADIR=${CIE_DATADIR:-/var/opt/cie}
 SCRIPTDIR=${SCRIPTDIR:-/opt/ingestion_scripts}
-MONGODB_HOST=${MONGODB_HOST:-unset}
-MONGODB_DB=${MONGODB_DB:-unset}
-MONGODB_DB_USER=${MONGODB_DB_USER:-unset}
-MONGODB_DB_PASS=${MONGODB_DB_PASS:-unset}
-MONGODB_DB_AUTHDB=${MONGODB_DB_AUTHDB:-admin}
+CIE_DATADIR=${CIE_DATADIR:-SCRIPTDIR/cie/data}
+CIE_ENV=${CIE_ENV:-unset}
+MONGODB_HOSTNAME=${MONGODB_HOSTNAME:-unset}
+MONGODB_DATABASE=${MONGODB_DATABASE:-unset}
+MONGODB_USERNAME=${MONGODB_USERNAME:-unset}
+MONGODB_PASSWORD=${MONGODB_PASSWORD:-unset}
+MONGODB_AUTHDB=${MONGODB_AUTHDB:-admin}
 
 if [ "${CIE_ENV}" = "unset" ]; then
   echo "ERROR: must specify the env."
@@ -22,31 +22,31 @@ if [ "${CIE_DATADIR}" = "unset" ]; then
   exit 1
 fi
 
-if [ "${MONGODB_HOST}" = "unset" ]; then
+if [ "${MONGODB_HOSTNAME}" = "unset" ]; then
   echo "ERROR: must specify a mongo host."
   exit 1
 fi
-if [ "${MONGODB_DB}" = "unset" ]; then
+if [ "${MONGODB_DATABASE}" = "unset" ]; then
   echo "ERROR: must specify a mongo database name."
   exit 1
 fi
 
-if [ "${MONGODB_DB_USER}" = "unset" ]; then
+if [ "${MONGODB_USERNAME}" = "unset" ]; then
   echo "ERROR: must specify a mongo db user."
   exit 1
 fi
-if [ "${MONGODB_DB_PASS}" = "unset" ]; then
+if [ "${MONGODB_PASSWORD}" = "unset" ]; then
   echo "ERROR: must specify a mongo database password."
   exit 1
 fi
 
-cd ${SCRIPTDIR} && python "${SCRIPTDIR}/cie/cie.py" \
+python ${SCRIPTDIR}/cie/main.py \
     --env "${CIE_ENV}" \
     --data-dir "${CIE_DATADIR}" \
-    --mongodb-host "${MONGODB_HOST}" \
-    --mongodb-db "${MONGODB_DB}" \
-    --mongodb-user "${MONGODB_DB_USER}" \
-    --mongodb-pass "${MONGODB_DB_PASS}" \
-    --mongodb-authdb "${MONGODB_DB_AUTHDB}"
+    --mongodb-host "${MONGODB_HOSTNAME}" \
+    --mongodb-db "${MONGODB_DATABASE}" \
+    --mongodb-user "${MONGODB_USERNAME}" \
+    --mongodb-pass "${MONGODB_PASSWORD}" \
+    --mongodb-authdb "${MONGODB_AUTHDB}"
 
 echo "</run cie>"

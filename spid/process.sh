@@ -4,29 +4,29 @@ set -e
 
 echo "<run spid>"
 
-SPID_DATADIR=${SPID_DATADIR:-/var/opt/spid}
 SCRIPTDIR=${SCRIPTDIR:-/opt/ingestion_scripts}
-MONGODB_HOST=${MONGODB_HOST:-unset}
-MONGODB_DB=${MONGODB_DB:-unset}
-MONGODB_DB_USER=${MONGODB_DB_USER:-unset}
-MONGODB_DB_PASS=${MONGODB_DB_PASS:-unset}
-MONGODB_DB_AUTHDB=${MONGODB_DB_AUTHDB:-admin}
+SPID_DATADIR=${SPID_DATADIR:-SCRIPTDIR/data/spid}
+MONGODB_HOSTNAME=${MONGODB_HOSTNAME:-unset}
+MONGODB_DATABASE=${MONGODB_DATABASE:-unset}
+MONGODB_USERNAME=${MONGODB_USERNAME:-unset}
+MONGODB_PASSWORD=${MONGODB_PASSWORD:-unset}
+MONGODB_AUTHDB=${MONGODB_AUTHDB:-admin}
 
-if [ "${MONGODB_HOST}" = "unset" ]; then
+if [ "${MONGODB_HOSTNAME}" = "unset" ]; then
   echo "ERROR: must specify a mongo host."
   exit 1
 fi
-if [ "${MONGODB_DB}" = "unset" ]; then
+if [ "${MONGODB_DATABASE}" = "unset" ]; then
   echo "ERROR: must specify a mongo database name."
   exit 1
 fi
 
-cd "${SCRIPTDIR}" && python "${SCRIPTDIR}/spid/spid.py" \
+python "${SCRIPTDIR}/spid/main.py" \
     --data-path-dest "${SPID_DATADIR}" \
-    --mongodb-host "${MONGODB_HOST}" \
-    --mongodb-db "${MONGODB_DB}" \
-    --mongodb-user "${MONGODB_DB_USER}" \
-    --mongodb-pass "${MONGODB_DB_PASS}" \
-    --mongodb-authdb "${MONGODB_DB_AUTHDB}"
+    --mongodb-host "${MONGODB_HOSTNAME}" \
+    --mongodb-db "${MONGODB_DATABASE}" \
+    --mongodb-user "${MONGODB_USERNAME}" \
+    --mongodb-pass "${MONGODB_PASSWORD}" \
+    --mongodb-authdb "${MONGODB_AUTHDB}"
 
 echo "</run spid>"

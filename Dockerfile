@@ -21,6 +21,7 @@ COPY anpr anpr
 COPY cie cie
 COPY common common
 COPY devitalia devitalia
+COPY repubblica-digitale repubblica-digitale
 COPY spid spid
 COPY requirements.txt .
 
