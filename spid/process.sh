@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -21,7 +21,7 @@ if [ "${MONGODB_DATABASE}" = "unset" ]; then
   exit 1
 fi
 
-python "${SCRIPTDIR}/spid/main.py" \
+python3 "${SCRIPTDIR}/spid/main.py" \
     --data-path-dest "${SPID_DATADIR}" \
     --mongodb-host "${MONGODB_HOSTNAME}" \
     --mongodb-db "${MONGODB_DATABASE}" \

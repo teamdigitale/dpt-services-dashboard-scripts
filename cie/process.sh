@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -40,7 +40,7 @@ if [ "${MONGODB_PASSWORD}" = "unset" ]; then
   exit 1
 fi
 
-python ${SCRIPTDIR}/cie/main.py \
+python3 ${SCRIPTDIR}/cie/main.py \
     --env "${CIE_ENV}" \
     --data-dir "${CIE_DATADIR}" \
     --mongodb-host "${MONGODB_HOSTNAME}" \

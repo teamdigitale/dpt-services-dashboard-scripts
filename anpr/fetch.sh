@@ -1,4 +1,4 @@
-#!/bin/env sh 
+#!/bin/env bash 
 
 datadir=${DATADIR:-/var/cache/dashboard_scripts/anpr}
 files_to_download="

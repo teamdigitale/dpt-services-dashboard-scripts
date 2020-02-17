@@ -1,4 +1,4 @@
-import httplib2
+#!/usr/bin/env python3
 
 import argparse
 from googleapiclient.discovery import build

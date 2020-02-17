@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -68,7 +68,7 @@ if [ "${REPDIG_GOOGLE_CLIENT_X509_CERT_URL}" == "unset" ]; then
   exit 1
 fi
 
-python ${SCRIPTDIR}/repubblica-digitale/main.py \
+python3 ${SCRIPTDIR}/repubblica-digitale/main.py \
     --mongodb-host "${MONGODB_HOSTNAME}" \
     --mongodb-db "${MONGODB_DATABASE}" \
     --mongodb-user "${MONGODB_USERNAME}" \

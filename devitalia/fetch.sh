@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -66,7 +66,7 @@ if [ "${DEVITALIA_GOOGLE_CLIENT_X509_CERT_URL}" == "unset" ]; then
   exit 1
 fi
 
-python ${SCRIPTDIR}/devitalia/fetch-engines/main.py \
+python3 ${SCRIPTDIR}/devitalia/fetch-engines/main.py \
     -w \
     --data_dir "${DEVITALIA_DATADIR}" \
     --num_threads "${DEVITALIA_NUM_THREADS}" \

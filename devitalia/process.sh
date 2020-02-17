@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -30,7 +30,7 @@ if [ "${MONGODB_PASSWORD}" = "unset" ]; then
   exit 1
 fi
 
-python ${SCRIPTDIR}/devitalia/main.py \
+python3 ${SCRIPTDIR}/devitalia/main.py \
     --data-dir "${DEVITALIA_DATADIR}" \
     --mongodb-host "${MONGODB_HOSTNAME}" \
     --mongodb-db "${MONGODB_DATABASE}" \

@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 
 set -e
 
@@ -13,7 +13,7 @@ if [ "x${DRYRUN}" == "xyes" ]; then
   dryrunflag="--dry-run"
 fi
 
-cd ${SCRIPTDIR} && python "${SCRIPTDIR}/anpr/anpr.py" \
+cd ${SCRIPTDIR} && python3 "${SCRIPTDIR}/anpr/anpr.py" \
     --daf-apikey "${DAF_APIKEY}" \
     --maps-apikey "${MAPS_APIKEY}" \
     --maps-cache "${SCRIPTDIR}/anpr/maps_cache.json" \

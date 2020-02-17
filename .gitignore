@@ -108,6 +108,8 @@ ENV/
 .history
 
 #others
+.bash_history
 .ash_history
+.viminfo
 prod.env
 data/pagopa/gz/**/*.csv
