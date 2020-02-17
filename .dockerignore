@@ -1,0 +1,10 @@
+.dockerignore
+.env.example
+.gitattributes
+.github
+AUTHORS
+azure-pipelines.yml
+data
+docker-compose.yaml
+LICENSE
+README.md
