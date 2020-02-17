@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  commitId: '$(Build.SourceVersion)'
 
 stages:
 - stage: Build
@@ -26,4 +26,5 @@ stages:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: |
-          $(tag)
+          latest
+          $(commitId)
