@@ -20,7 +20,7 @@ stages:
       displayName: Build image and push it to DockerHub
       inputs:
         containerRegistry: 'teamdigitalesa'
-        repository: 'dpt-services-dashboard-scripts'
+        repository: 'teamdigitale/dpt-services-dashboard-scripts'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: |
