@@ -45,7 +45,7 @@ class RepubblicaDigitale:
         scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 
         spreadsheet_id = '1BV95DWqrytq1kSyP2EdFkJ0PSuGM5gdx0jhuS144tQI'
-        range_name = 'Grafici!A1:C100'
+        range_name = 'Grafici!A1:C200'
 
         service_account_info = {
             "type": "service_account",
