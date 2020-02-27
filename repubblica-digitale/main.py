@@ -75,7 +75,7 @@ class RepubblicaDigitale:
         repubblica_digitale_overall = []
 
         for row in values:
-            if len(values) > 0:
+            if len(values) > 0 and row[2].isdigit():
                 repubblica_digitale_overall.append({'categoria': row[0], 'tipologia': row[1], 'quantita': int(row[2])})
 
         self.save_to_mongo(args, "repubblica_digitale_overall", "repubblica_digitale_overall_tmp", pd.DataFrame(repubblica_digitale_overall), True)
