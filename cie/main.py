@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
+import argparse
+import io
 import os
-import glob
+import requests
+import pandas as pd
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import pandas as pd
-import argparse
 from common import MongoAction
 
 # CIE EMESSE PER REGIONE: sum (Totale CIE Emesse)
@@ -15,8 +17,6 @@ from common import MongoAction
 
 INT_fill = 0
 DATE_fill = "01/01/1900"
-
-#filename = "statistiche-20180214.txt"
 
 date_column = [
     "Installazione prevista dal",
@@ -58,17 +58,21 @@ class CIE:
         mongoAction.renameCollection(collection_temp, collection)
         mongoAction.closeClient()
 
+    def download_stats(self, url):
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+        r = requests.get(url, headers=headers, allow_redirects=True).content
+        return r
+
     def main(self, args):
         if args.env == 'production':
-            list_of_files = glob.glob(args.data_dir + '/*.csv')
-            last_file_modified = max(list_of_files, key=os.path.getctime)
-            filename = "{}".format( last_file_modified )
+            file = self.download_stats(args.stats_url)
+            cie = pd.read_csv(io.StringIO(file.decode('utf-8')), sep="\t", converters=str_column)
         elif args.env == 'development':
-            filename = "{}/cie_mock_test_data.csv".format(args.data_dir if opts.data_dir else ".")
+            filename = "{}/progettocie-antonio.csv".format(args.data_dir if opts.data_dir else ".")
+            cie = pd.read_csv(filename, sep="\t", converters=str_column)
         else:
-            raise Exception('ENV is a must')
+            raise Exception('A running environment should be specified (production or development).')
 
-        cie = pd.read_csv(filename, sep="\t", converters=str_column)
         cie[date_column] = cie[date_column].fillna(value=DATE_fill)
         cie[int_column] = cie[int_column].fillna(value=INT_fill)
 
@@ -128,6 +132,8 @@ def GetParseOptions():
                             'production', 'development'], default=None, help="environment")
     parser.add_argument('--data-dir', action="store", dest="data_dir", type=str,
                         default=None, help="Directory to e used for storing data")
+    parser.add_argument('--stats-url', action="store",
+                        dest="stats_url", type=str, help="Address of the CSV file with the stats")
     parser.add_argument('--mongodb-db', action="store",
                         dest="mongodb_db", type=str, default=None, help="Mongodb DB")
     parser.add_argument('--mongodb-host', action="store",
