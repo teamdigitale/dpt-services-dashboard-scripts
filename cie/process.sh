@@ -1,12 +1,13 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 set -e
 
 echo "<run cie>"
 
 SCRIPTDIR=${SCRIPTDIR:-/opt/ingestion_scripts}
-CIE_DATADIR=${CIE_DATADIR:-SCRIPTDIR/cie/data}
+CIE_DATADIR=${CIE_DATADIR:-SCRIPTDIR/data/cie}
 CIE_ENV=${CIE_ENV:-unset}
+CIE_STATS_URL=${CIE_STATS_URL:-unset}
 MONGODB_HOSTNAME=${MONGODB_HOSTNAME:-unset}
 MONGODB_DATABASE=${MONGODB_DATABASE:-unset}
 MONGODB_USERNAME=${MONGODB_USERNAME:-unset}
@@ -19,6 +20,10 @@ if [ "${CIE_ENV}" = "unset" ]; then
 fi
 if [ "${CIE_DATADIR}" = "unset" ]; then
   echo "ERROR: must specify a data dir."
+  exit 1
+fi
+if [ "${CIE_STATS_URL}" = "unset" ]; then
+  echo "ERROR: must specify a csv stats url."
   exit 1
 fi
 
@@ -43,6 +48,7 @@ fi
 python3 ${SCRIPTDIR}/cie/main.py \
     --env "${CIE_ENV}" \
     --data-dir "${CIE_DATADIR}" \
+    --stats-url "${CIE_STATS_URL}" \
     --mongodb-host "${MONGODB_HOSTNAME}" \
     --mongodb-db "${MONGODB_DATABASE}" \
     --mongodb-user "${MONGODB_USERNAME}" \
