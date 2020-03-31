@@ -19,16 +19,16 @@ class Catalogo(Engine):
 
     '''
     Relevant files:
-    - https://developers.italia.it/crawler/softwares.yml
-    - https://developers.italia.it/crawler/amministrazioni.yml
-    - https://developers.italia.it/crawler/software_categories.yml
-    - https://developers.italia.it/crawler/software-open-source.yml
-    - https://developers.italia.it/crawler/software-riuso.yml
-    - https://developers.italia.it/crawler/software_scopes.yml
-    - https://developers.italia.it/crawler/software_tags.yml
+    - https://crawler.developers.italia.it/softwares.yml
+    - https://crawler.developers.italia.it/amministrazioni.yml
+    - https://crawler.developers.italia.it/software_categories.yml
+    - https://crawler.developers.italia.it/software-open-source.yml
+    - https://crawler.developers.italia.it/software-riuso.yml
+    - https://crawler.developers.italia.it/software_scopes.yml
+    - https://crawler.developers.italia.it/software_tags.yml
     '''
 
-    SOFTWARES_URL = 'https://developers.italia.it/crawler/softwares.yml'
+    SOFTWARES_URL = 'https://crawler.developers.italia.it/softwares.yml'
     INDICEPA_URL = 'https://www.indicepa.gov.it/public-services/opendata-read-service.php?dstype=FS&filename=amministrazioni.txt'
 
     softwares = None
