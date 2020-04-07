@@ -68,7 +68,7 @@ class CIE:
             file = self.download_stats(args.stats_url)
             cie = pd.read_csv(io.StringIO(file.decode('utf-8')), sep="\t", converters=str_column)
         elif args.env == 'development':
-            filename = "{}/progettocie-antonio.csv".format(args.data_dir if opts.data_dir else ".")
+            filename = "{}/progettocie.csv".format(args.data_dir if opts.data_dir else ".")
             cie = pd.read_csv(filename, sep="\t", converters=str_column)
         else:
             raise Exception('A running environment should be specified (production or development).')
