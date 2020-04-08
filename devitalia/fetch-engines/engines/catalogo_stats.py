@@ -89,7 +89,10 @@ class Catalogo(Engine):
                 vitality[timestamp] = { 'num': 0, 'val': 0 }
     
             vitality[timestamp]['num'] += 1
-            vitality[timestamp]['val'] += mean(sw['vitalityDataChart'])
+            if sw['vitalityDataChart'] is None:
+                vitality[timestamp]['val'] += 0
+            else:
+                vitality[timestamp]['val'] += mean(sw['vitalityDataChart'])
 
         for ts, vit in vitality.items():
             self.add_timestamp_to_metrics(ts)
