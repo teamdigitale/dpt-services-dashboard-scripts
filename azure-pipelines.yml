@@ -1,5 +1,13 @@
+# Trigger builds only when a commit gets
+# merged to master.
+# Batch builds.
+# Do not trigger PR validation builds.
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+    - master
+pr: none
 
 resources:
 - repo: self
