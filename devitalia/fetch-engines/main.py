@@ -4,7 +4,7 @@ import argparse
 import engines
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-enabled_engines = ['GitHub', 'Slack', 'Forum', 'GAnalytics', 'Onboarding', 'Catalogo', 'CatalogoRegioni', 'CatalogoCategories', 'CatalogoAudiences']
+enabled_engines = ['GitHub', 'Forum', 'GAnalytics', 'Onboarding', 'Catalogo', 'CatalogoRegioni', 'CatalogoCategories', 'CatalogoAudiences']
 
 def compute_stats(args):
     for engine_name in enabled_engines:
