@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from datetime import datetime
 import engines
 from apscheduler.schedulers.blocking import BlockingScheduler
 
@@ -15,25 +16,43 @@ def compute_stats(args):
             stats = engine.compute_stats()
 
             keyname = engine.keyname
-            computed_stats += '{},{}\n'.format(keyname, ','.join(engine.metric_names))
+
+            # Don't add the CSV header if we are running with --incremental
+            if not args.incremental:
+                computed_stats = '{},{}\n'.format(keyname, ','.join(engine.metric_names))
+
             for stat in sorted(stats):
                 computed_stats += "{}".format(stat)
                 for m in engine.metric_names:
                     computed_stats += ",{}".format(stats[stat][m])
                 computed_stats += "\n"
 
-            if args.write:
-                f = open("{}/{}.csv".format(args.data_dir, engine.name), "w")
+            mode = "a+" if args.incremental else "w+"
+            with open("{}/{}.csv".format(args.data_dir, engine.name), mode) as f:
                 f.write(computed_stats)
-                f.close()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Program to compute statistics for developers italia")
     parser.add_argument('-s', action="store_true", dest="schedule", help="Run app scheduled job")
     parser.add_argument('-t', action="store", dest="tool", type=str, required=False, help="Tool to compute statistics for")
-    parser.add_argument('-w', action="store_true", dest="write", help="Store statistics to file")
-    parser.add_argument('--data_dir', action="store", dest="data_dir", type=str, help="Directory to save stats to")
+    parser.add_argument('--data_dir', action="store", dest="data_dir", type=str, default=".", help="Directory to save stats to")
+
+    mutually_excl = parser.add_mutually_exclusive_group()
+    mutually_excl.add_argument(
+        '--incremental',
+        action="store_true",
+        dest="incremental",
+        help="Resume from last date seen in the CSV file and append to it (GitHub engine only)"
+    )
+    mutually_excl.add_argument(
+        '--since',
+        action="store",
+        dest="since",
+        type=lambda s: datetime.strptime(s, '%Y-%m-%dT%H:%M:%S%z'),
+        default=None,
+        help="Get data after this time (UTC, ISO 8601) eg. 1970-12-01T00:00:00Z (GitHub engine only)"
+    )
     parser.add_argument('--num_threads', action="store", dest="num_threads", type=int, help="Number of threads to execute")
     parser.add_argument('--token_github', action="store", dest="token_github", type=str, help="GitHub API key")
     parser.add_argument('--token_slack', action="store", dest="token_slack", type=str, help="Slack legacy token")

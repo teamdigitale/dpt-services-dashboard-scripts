@@ -6,7 +6,7 @@ import os
 import logging
 import logging.config
 
-class Engine:
+class Engine(object):
     name = None
     logger = None
     args = None
@@ -30,7 +30,7 @@ class Engine:
     def get_property(self, property_name):
         if getattr(self.args, property_name, None):
             return getattr(self.args, property_name)
-        
+
         # hack to keep backslah not doubled from encodind in env vars
         return bytes(os.getenv(property_name.upper()), 'latin1').decode('unicode_escape')
 
@@ -61,7 +61,7 @@ class Engine:
         """
         if timestamp not in self.metrics:
             self.metrics[timestamp] = {}
-        
+
             for metric in self.metric_names:
                 self.metrics[timestamp][metric] = 0
 
