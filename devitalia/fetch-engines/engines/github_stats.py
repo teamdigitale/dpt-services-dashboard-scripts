@@ -205,7 +205,7 @@ class GitHub(Engine):
             self.num_repos()
 
         repo_names = [r['name'] for r in self.repos]
-        pulls = self._multiple_api_calls('https://api.github.com/repos/italia/{}/pulls', repo_names, True)
+        pulls = self._multiple_api_calls('https://api.github.com/repos/italia/{}/pulls?state=all', repo_names, True)
 
         for p in pulls:
             for r in pulls[p]:
