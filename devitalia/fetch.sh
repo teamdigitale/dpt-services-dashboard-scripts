@@ -67,7 +67,6 @@ if [ "${DEVITALIA_GOOGLE_CLIENT_X509_CERT_URL}" == "unset" ]; then
 fi
 
 python3 ${SCRIPTDIR}/devitalia/fetch-engines/main.py \
-    -w \
     --data_dir "${DEVITALIA_DATADIR}" \
     --num_threads "${DEVITALIA_NUM_THREADS}" \
     --token_github "${DEVITALIA_TOKEN_GITHUB}" \
