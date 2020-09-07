@@ -51,7 +51,7 @@ class GitHub(Engine):
 
     def __init__(self, args):
         super(GitHub, self).__init__(args, 'github')
-        self.metric_names = ['num_members', 'num_repos', 'num_forks', 'num_contribs', 'num_commits', 'num_pr', 'num_clones']
+        self.metric_names = ['num_members', 'num_repos', 'num_forks', 'num_contribs', 'num_commits', 'num_pr']
 
         if args.incremental:
             csv_path = "{}/{}.csv".format(args.data_dir, self.name)
@@ -296,29 +296,6 @@ class GitHub(Engine):
                 self.add_timestamp_to_metrics(timestamp)
 
                 self.metrics[timestamp]['num_pr'] += 1
-
-    def num_clones(self):
-        """Fetch the git clones not older than 14 days made from projects
-        in the GitHub organization.
-
-        It needs a GitHub token with push access to the repos.
-        """
-
-        self.logger.info('Getting clones from repos...')
-
-        repo_names = [r['name'] for r in self._all_repos()]
-        ret = self._multiple_api_calls('https://api.github.com/repos/italia/{}/traffic/clones', repo_names, False)
-
-        for _repo, clones in ret.items():
-            clones = clones[0]['clones']
-            if self.args.since is not None:
-                clones = [c for c in clones if to_datetime(c['timestamp']) >= self.args.since]
-
-            for c in clones:
-                timestamp = self.strip_date(c['timestamp'])
-                self.add_timestamp_to_metrics(timestamp)
-
-                self.metrics[timestamp]['num_clones'] += c['count']
 
     def compute_stats(self):
         today = datetime.now(tz=timezone.utc).date()
