@@ -36,6 +36,7 @@ class GAnalytics(Engine):
     user_views = None
     auth = None
     countries = None
+    attempts_limit = 3
 
     def __init__(self, args):
         super(GAnalytics, self).__init__(args, 'ganalytics')
@@ -173,6 +174,7 @@ class GAnalytics(Engine):
 
         ritorno = {}
 
+        attempt = 0
         while cur_date > first_date:
             cur_date = cur_date - timedelta(days=1)
 
@@ -193,6 +195,7 @@ class GAnalytics(Engine):
                     ritorno[timestamp] = calldata
 
                     service.data().close()
+                    attempt = 0
                     break
                 except HttpError:
                     self.logger.debug("Rate limit reached, waiting 60 seconds.")
@@ -201,7 +204,12 @@ class GAnalytics(Engine):
                 except timeout:
                     self.logger.error("Socket Timeout error received, retrying...")
                     cur_date = cur_date + timedelta(days=1)
+                    attempt += 1
                     break
+
+            if attempt >= self.attempts_limit:
+                self.logger.error("Too many failed attempts: " + str(attempt))
+                break
 
         return ritorno
 
