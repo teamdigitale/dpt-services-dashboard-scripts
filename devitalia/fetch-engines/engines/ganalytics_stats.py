@@ -7,6 +7,7 @@ from apiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.errors import HttpError
 from google.auth import exceptions
+from socket import timeout
 
 from .engine import Engine
 
@@ -35,6 +36,7 @@ class GAnalytics(Engine):
     user_views = None
     auth = None
     countries = None
+    attempts_limit = 3
 
     def __init__(self, args):
         super(GAnalytics, self).__init__(args, 'ganalytics')
@@ -66,7 +68,6 @@ class GAnalytics(Engine):
                 api_version='v3',
                 scopes=[scope],
                 service_account_info=service_account_info)
-                
         return service, profile_id
 
     def get_first_profile_id(self, service):
@@ -173,7 +174,8 @@ class GAnalytics(Engine):
 
         ritorno = {}
 
-        while cur_date >= first_date:
+        attempt = 0
+        while cur_date > first_date:
             cur_date = cur_date - timedelta(days=1)
 
             while True:
@@ -187,13 +189,27 @@ class GAnalytics(Engine):
                         start_index ='1',
                         max_results ='200').execute()
 
+                    self.logger.debug("processing: " + cur_date.strftime("%Y-%m-%d"))
+
                     timestamp = self.strip_date(cur_date)
                     ritorno[timestamp] = calldata
+
+                    service.data().close()
+                    attempt = 0
                     break
                 except HttpError:
                     self.logger.debug("Rate limit reached, waiting 60 seconds.")
                     time.sleep(60)
                     self.logger.debug("Restarting API calls.")
+                except timeout:
+                    self.logger.error("Socket Timeout error received, retrying...")
+                    cur_date = cur_date + timedelta(days=1)
+                    attempt += 1
+                    break
+
+            if attempt >= self.attempts_limit:
+                self.logger.error("Too many failed attempts: " + str(attempt))
+                break
 
         return ritorno
 
