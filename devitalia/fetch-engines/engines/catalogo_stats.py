@@ -37,7 +37,7 @@ class Catalogo(Engine):
     def __init__(self, args):
         super(Catalogo, self).__init__(args, 'catalogo')
         #each metric must have a corresponding method
-        self.metric_names = ['num_pas', 'num_softwares', 'vitality', 'num_pas_reusing']
+        self.metric_names = ['num_pas', 'num_softwares', 'num_softwares_reuse', 'num_softwares_reusing', 'vitality', 'num_pas_reusing']
 
     def _get_softwares(self):
         sws = requests.get(self.SOFTWARES_URL).content
@@ -76,6 +76,28 @@ class Catalogo(Engine):
             timestamp = self.strip_date(sw['publiccode']['releaseDate'])
             self.add_timestamp_to_metrics(timestamp)
             self.metrics[timestamp]['num_softwares'] += 1
+
+    def num_softwares_reuse(self):
+        self.logger.info('Getting num softwares reuse...')
+        if self.softwares is None:
+            self._get_softwares()
+
+        for sw in self.softwares:
+            timestamp = self.strip_date(sw['publiccode']['releaseDate'])
+            self.add_timestamp_to_metrics(timestamp)
+            if 'it' in sw['publiccode'] and 'riuso' in sw['publiccode']['it'] and 'codiceIPA' in sw['publiccode']['it']['riuso']:
+                self.metrics[timestamp]['num_softwares_reuse'] += 1
+
+    def num_softwares_reusing(self):
+        self.logger.info('Getting num softwares reusing...')
+        if self.softwares is None:
+            self._get_softwares()
+
+        for sw in self.softwares:
+            timestamp = self.strip_date(sw['publiccode']['releaseDate'])
+            self.add_timestamp_to_metrics(timestamp)
+            if 'usedBy' in sw['publiccode'] and sw['publiccode']['usedBy']:
+                self.metrics[timestamp]['num_softwares_reusing'] += 1
 
     def vitality(self):
         self.logger.info('Getting software vitality...')
