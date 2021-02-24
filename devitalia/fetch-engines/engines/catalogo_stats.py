@@ -44,6 +44,7 @@ class Catalogo(Engine):
         sws = yaml.safe_load(sws)
         self.softwares = sws
 
+    # Total number of PAs
     def num_pas(self):
         self.logger.info('Getting num repos...')
         if self.softwares is None:
@@ -67,6 +68,7 @@ class Catalogo(Engine):
             self.add_timestamp_to_metrics(ts)
             self.metrics[ts]['num_pas'] = len(lst_pas)
 
+    # Total number of softwares
     def num_softwares(self):
         self.logger.info('Getting num softwares...')
         if self.softwares is None:
@@ -77,6 +79,21 @@ class Catalogo(Engine):
             self.add_timestamp_to_metrics(timestamp)
             self.metrics[timestamp]['num_softwares'] += 1
 
+    # Total number of softwares released for reuse
+    #
+    # You can get this metric inside metabase using the following custom query
+    #
+    # [
+    #     { $match: {} },
+    #     { $group: { _id : null, software_total : { $sum: "$num_softwares" }, num_reuse : { $sum: "$num_softwares_reuse" } }},
+    #     { $project: { 
+    #         _id : 0, num_reuse_percent : { 
+    #             $divide: [ "$num_reuse", "$software_total"]
+    #         }
+    #       }
+    #     },
+    # ]
+    #
     def num_softwares_reuse(self):
         self.logger.info('Getting num softwares reuse...')
         if self.softwares is None:
@@ -88,6 +105,21 @@ class Catalogo(Engine):
             if 'it' in sw['publiccode'] and 'riuso' in sw['publiccode']['it'] and 'codiceIPA' in sw['publiccode']['it']['riuso']:
                 self.metrics[timestamp]['num_softwares_reuse'] += 1
 
+    # Total number of softwares reused at least once
+    #
+    # You can get this metric inside metabase using the following custom query
+    #
+    # [
+    #     { $match: {} },
+    #     { $group: { _id : null, software_total : { $sum: "$num_softwares" }, num_reusing : { $sum: "$num_softwares_reusing" } }},
+    #     { $project: { 
+    #         _id : 0, num_reusing_percent : { 
+    #             $divide: [ "$num_reusing", "$software_total"]
+    #         }
+    #       }
+    #     },
+    # ]
+    #
     def num_softwares_reusing(self):
         self.logger.info('Getting num softwares reusing...')
         if self.softwares is None:
@@ -99,6 +131,7 @@ class Catalogo(Engine):
             if 'usedBy' in sw['publiccode'] and sw['publiccode']['usedBy']:
                 self.metrics[timestamp]['num_softwares_reusing'] += 1
 
+    # Total software vitality
     def vitality(self):
         self.logger.info('Getting software vitality...')
         if self.softwares is None:
@@ -120,6 +153,7 @@ class Catalogo(Engine):
             self.add_timestamp_to_metrics(ts)
             self.metrics[ts]['vitality'] = vit['val'] / vit['num']
 
+    # Total number of PAs reusing software
     def num_pas_reusing(self):
         self.logger.info('Getting num reusing pas...')
         if self.softwares is None:
