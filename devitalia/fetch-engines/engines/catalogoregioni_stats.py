@@ -8,7 +8,7 @@ from .engine import Engine
 class CatalogoRegioni(Engine):
     """
     Class that computes the statistics from the reuse catalog from Developers Italia.
-    
+
     Example of results:
     # python main.py -t catalogoregioni
         regione,num_pas,num_softwares
@@ -32,11 +32,12 @@ class CatalogoRegioni(Engine):
 
     regioni = [
         'Abruzzo', 'Basilicata', 'Calabria', 'Campania',
-        'Emilia Romagna', 'Friuli Venezia Giulia', 'Lazio',
+        'Emilia-Romagna', 'Friuli-Venezia Giulia', 'Lazio',
         'Liguria', 'Lombardia', 'Marche', 'Molise', 'Piemonte',
         'Puglia', 'Sardegna', 'Sicilia', 'Toscana',
-        'Trentino Alto Adige', 'Umbria', 'Valle D\'Aosta', 'Veneto'
+        'Trentino-Alto Adige/Südtirol', 'Umbria',"Valle d'Aosta/Vallée d'Aoste", 'Veneto'
     ]
+
     softwares = None
     administrations = None
 
@@ -57,11 +58,10 @@ class CatalogoRegioni(Engine):
         self.softwares = sws
 
     def _get_administrations(self):
-        pas = requests.get(self.INDICEPA_URL).content
-        pas = pas.decode("utf-8")
-        pas = pas.split('\n')
+        pas = requests.get(self.INDICEPA_URL).content.decode("utf-8-sig").splitlines()
+
         self.administrations = []
-        
+
         titles = pas[0].split('\t')
         for p in pas[1:]:
             arr = { }
@@ -69,7 +69,7 @@ class CatalogoRegioni(Engine):
             for i in range(0, len(values)):
                 arr[titles[i]] = values[i]
             self.administrations.append(arr)
-            
+
     def num_pas(self):
         self.logger.info('Getting num PAs...')
         if self.softwares is None:
