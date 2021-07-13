@@ -60,7 +60,7 @@ class CIE:
 
     def download_stats(self, url):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
-        r = requests.get(url, headers=headers, allow_redirects=True, verify=False).content
+        r = requests.get(url, headers=headers, allow_redirects=True).content
         return r
 
     def main(self, args):
