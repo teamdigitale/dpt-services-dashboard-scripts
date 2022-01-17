@@ -46,6 +46,7 @@ COPY common common
 COPY devitalia devitalia
 COPY repubblica-digitale repubblica-digitale
 COPY spid spid
+COPY padigitale padigitale
 
 USER ${SCRIPTS_USER}
 

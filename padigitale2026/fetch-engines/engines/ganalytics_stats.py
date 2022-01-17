@@ -18,7 +18,7 @@ class GAnalytics(Engine):
     continous permission.
     Account needs to be created here:
     https://console.developers.google.com/apis/dashboard
-    First, create a project, then a key under Credentials, 
+    First, create a project, then a key under Credentials,
     select Create Credentials -> Service Account Key
     when created, copy the email address generated for that key and add it to Google
     Analytics property users, here: https://analytics.google.com/analytics/web/#/a96140462w141653962p146203168/admin/suiteusermanagement/account
@@ -93,10 +93,10 @@ class GAnalytics(Engine):
             # we actually have two profiles
             # 0 for Team digitale
             # 1 for Dipartimento per la trasformazione digitale
-            firstAccountId = accounts.get('items')[0].get('id')
+            firstAccountId = accounts.get('items')[1].get('id')
 
             webPropertyID = self.get_property('google_wpid')
-            
+
             profiles = service.management().profiles().list(
                 accountId=firstAccountId,
                 webPropertyId=webPropertyID).execute()
@@ -173,7 +173,8 @@ class GAnalytics(Engine):
         cur_date = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
         first_date = cur_date
         if history:
-            first_date = datetime.strptime('2017-01-01',"%Y-%m-%d").replace(hour=0, minute=0, second=0, microsecond=0)
+            # website start date 2021-11-15
+            first_date = datetime.strptime('2021-11-15',"%Y-%m-%d").replace(hour=0, minute=0, second=0, microsecond=0)
 
         ritorno = {}
 
