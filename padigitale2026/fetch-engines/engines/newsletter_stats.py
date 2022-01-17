@@ -3,7 +3,6 @@ import requests
 from requests.auth import HTTPBasicAuth
 import numpy as np
 import re
-import csv
 from datetime import datetime
 from .engine import Engine
 
