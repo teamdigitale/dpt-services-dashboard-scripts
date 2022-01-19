@@ -30,7 +30,7 @@ if [ "${MONGODB_PASSWORD}" = "unset" ]; then
   exit 1
 fi
 
-python3 ${SCRIPTDIR}/padigitale/main.py \
+python3 ${SCRIPTDIR}/padigitale2026/main.py \
     --data-dir "${PADIGITALE_DATADIR}" \
     --mongodb-host "${MONGODB_HOSTNAME}" \
     --mongodb-db "${MONGODB_DATABASE}" \
