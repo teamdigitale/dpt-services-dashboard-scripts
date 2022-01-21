@@ -39,7 +39,8 @@ class Slack(Engine):
         if name is not None:
             self.logger.debug('Calling API for channel %s...', name)
 
-        params = {'token': self.get_property('token_slack')}
+        params = {'team_id': self.get_property('teamid_slack')}
+        headers = {'Authorization': 'Bearer %s' % (self.get_property('token_slack'))}
         link = url
 
         ritorno = []        
@@ -50,7 +51,7 @@ class Slack(Engine):
                 else:
                     link = '{}?{}'.format(url, urlencode(params))
 
-                r = requests.get(link)
+                r = requests.get(link, headers=headers)
                 
                 answer = None
 
@@ -78,7 +79,7 @@ class Slack(Engine):
 
             ritorno.append(answer[field])
 
-            if 'has_more' in answer and answer['has_more']:
+            if 'response_metadata' in answer and answer['response_metadata']['next_cursor']:
                 cursor = answer['response_metadata']['next_cursor']
                 params['cursor'] = cursor
             else:
@@ -110,8 +111,8 @@ class Slack(Engine):
         """
 
         self.logger.info('Getting registered users...')
-        call_response = self._api_call('https://developersitalia.slack.com/api/users.list', 'members', False)
-        self.registered_users = call_response[0]
+        call_response = self._api_call('https://developersitalia.slack.com/api/users.list', 'members', True)
+        self.registered_users = [*call_response]
 
         timestamp = self.strip_date(datetime.datetime.now())
         self.add_timestamp_to_metrics(timestamp)
