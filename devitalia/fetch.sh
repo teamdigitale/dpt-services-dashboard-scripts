@@ -6,6 +6,7 @@ SCRIPTDIR=${SCRIPTDIR:-/opt/ingestion_scripts}
 DEVITALIA_DATADIR=${DEVITALIA_DATADIR:-SCRIPTDIR/devitalia/data}
 DEVITALIA_NUM_THREADS=${DEVITALIA_NUM_THREADS:-10}
 DEVITALIA_TOKEN_GITHUB=${DEVITALIA_TOKEN_GITHUB:-unset}
+DEVITALIA_TEAMID_SLACK=${DEVITALIA_TEAMID_SLACK:-unset}
 DEVITALIA_TOKEN_SLACK=${DEVITALIA_TOKEN_SLACK:-unset}
 DEVITALIA_FORUM_API_KEY=${DEVITALIA_FORUM_API_KEY:-unset}
 DEVITALIA_GOOGLE_WPID=${DEVITALIA_GOOGLE_WPID:-unset}
@@ -21,8 +22,13 @@ if [ "${DEVITALIA_TOKEN_GITHUB}" == "unset" ]; then
   exit 1
 fi
 
+if [ "${DEVITALIA_TEAMID_SLACK}" == "unset" ]; then
+  echo "ERROR: must specify a Slack team ID."
+  exit 1
+fi
+
 if [ "${DEVITALIA_TOKEN_SLACK}" == "unset" ]; then
-  echo "ERROR: must specify a Slack token."
+  echo "ERROR: must specify a Slack APP token."
   exit 1
 fi
 
@@ -70,6 +76,7 @@ python3 ${SCRIPTDIR}/devitalia/fetch-engines/main.py \
     --data_dir "${DEVITALIA_DATADIR}" \
     --num_threads "${DEVITALIA_NUM_THREADS}" \
     --token_github "${DEVITALIA_TOKEN_GITHUB}" \
+    --teamid_slack "${DEVITALIA_TEAMID_SLACK}" \
     --token_slack "${DEVITALIA_TOKEN_SLACK}" \
     --forum_api_key "${DEVITALIA_FORUM_API_KEY}" \
     --google_wpid "${DEVITALIA_GOOGLE_WPID}" \
