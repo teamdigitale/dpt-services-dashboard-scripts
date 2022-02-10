@@ -22,7 +22,7 @@ if [ "${DEVITALIA_TOKEN_GITHUB}" == "unset" ]; then
 fi
 
 if [ "${DEVITALIA_TOKEN_SLACK}" == "unset" ]; then
-  echo "ERROR: must specify a Slack token."
+  echo "ERROR: must specify a Slack APP token."
   exit 1
 fi
 
