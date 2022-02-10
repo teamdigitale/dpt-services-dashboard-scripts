@@ -33,13 +33,13 @@ class Slack(Engine):
 
     def __init__(self, args):
         super(Slack, self).__init__(args, 'slack')
-        self.metric_names = ['num_registered_users', 'num_channels', 'num_messages', 'num_replies']
+        self.metric_names = ['num_registered_users']
 
     def _api_call(self, url, field, reduce=True, name=None):
         if name is not None:
             self.logger.debug('Calling API for channel %s...', name)
 
-        params = {'team_id': self.get_property('teamid_slack')}
+        params = {}
         headers = {'Authorization': 'Bearer %s' % (self.get_property('token_slack'))}
         link = url
 

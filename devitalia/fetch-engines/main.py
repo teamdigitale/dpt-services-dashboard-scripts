@@ -5,7 +5,7 @@ from datetime import datetime
 import engines
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-enabled_engines = ['GitHub', 'Forum', 'GAnalytics', 'Onboarding', 'Catalogo', 'CatalogoRegioni', 'CatalogoCategories', 'CatalogoAudiences']
+enabled_engines = ['GitHub', "Slack", 'Forum', 'GAnalytics', 'Onboarding', 'Catalogo', 'CatalogoRegioni', 'CatalogoCategories', 'CatalogoAudiences']
 
 def compute_stats(args):
     for engine_name in enabled_engines:
@@ -55,7 +55,6 @@ if __name__ == "__main__":
     )
     parser.add_argument('--num_threads', action="store", dest="num_threads", type=int, help="Number of threads to execute")
     parser.add_argument('--token_github', action="store", dest="token_github", type=str, help="GitHub API key")
-    parser.add_argument('--teamid_slack', action="store", dest="teamid_slack", type=str, help="Slack team ID")
     parser.add_argument('--token_slack', action="store", dest="token_slack", type=str, help="Slack app token")
     parser.add_argument('--forum_api_key', action="store", dest="forum_api_key", type=str, help="Forum API key")
     parser.add_argument('--google_wpid', action="store", dest="google_wpid", type=str, help="Google Analytics WP id")
