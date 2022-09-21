@@ -60,7 +60,8 @@ class Newsletter(Engine):
       o = re.compile(self.uuid_regex).split(item['address'])
       item['uuid'] = item['address'].split(f'{o[0]}.')[1]
       item['address'] = o[0]
-      item['vars']['message'] = item['vars']['message'].replace("\n", "")
+      if 'message' in item['vars']:
+        item['vars']['message'] = item['vars']['message'].replace("\n", "")
       return item
 
     def makeRequest(self, url, items):
