@@ -39,7 +39,7 @@ class Forum(Engine):
     def _api_call(self, url, reduce=True, paginate=False):
         headers = {
             'Api-Key': '{}'.format(self.get_property('forum_api_key')),
-            'Api-Username': 'dashboard-scripts'
+            'Api-Username': 'system'
         }
 
         ritorno = []
