@@ -13,26 +13,14 @@ class CatalogoAudiences(Engine):
     Example of results:
     # python main.py -t catalogoaudiences
         slug,software_audiences
-        OPSILab-Idra-015316_1,government
-        OPSILab-Idra-015316_2,local-authorities
-        OPSILab-Idra-015316_3,research
+        <software_id>_1,government
+        <software_id>_2,local-authorities
+        <software_id>_3,research
     """
 
-    """
-    Relevant files:
-    - https://crawler.developers.italia.it/softwares.yml
-    - https://crawler.developers.italia.it/amministrazioni.yml
-    - https://crawler.developers.italia.it/software_categories.yml
-    - https://crawler.developers.italia.it/software-open-source.yml
-    - https://crawler.developers.italia.it/software-riuso.yml
-    - https://crawler.developers.italia.it/software_scopes.yml
-    - https://crawler.developers.italia.it/software_tags.yml
-    """
+    API_BASE_URL = "https://api.developers.italia.it/v1"
 
-    SOFTWARES_URL = "https://crawler.developers.italia.it/softwares.yml"
-
-    softwares = None
-    administrations = None
+    software = []
 
     def __init__(self, args):
         super(CatalogoAudiences, self).__init__(args, "catalogoaudiences")
@@ -40,28 +28,45 @@ class CatalogoAudiences(Engine):
         # each metric must have a corresponding method
         self.metric_names = ["software_audiences"]
 
-    def _get_softwares(self):
-        sws = requests.get(self.SOFTWARES_URL).content
-        sws = yaml.safe_load(sws)
-        self.softwares = sws
+    def _get_software(self):
+        items = []
+
+        page = True
+        page_after = ""
+
+        while page:
+            res = requests.get(f"{API_BASE_URL}/software?&{page_after}")
+            res.raise_for_status()
+
+            body = res.json()
+            items += body["data"]
+
+            page_after = body["links"]["next"]
+            if page_after:
+                # Remove the '?'
+                page_after = page_after[1:]
+
+            page = bool(page_after)
+
+        self.software = items
 
     def software_audiences(self):
-        self.logger.info("Getting softwares' audiences...")
-        if self.softwares is None:
-            self._get_softwares()
+        self.logger.info("Getting software audiences...")
+        if not self.software:
+            self._get_software()
 
-        for sw in self.softwares:
-            if (
-                "intendedAudience" in sw["publiccode"]
-                and "scope" in sw["publiccode"]["intendedAudience"]
-            ):
-                audience = sw["publiccode"]["intendedAudience"]["scope"]
-            else:
-                audience = []
+        for sw in self.software:
+            publiccode = {}
+            try:
+                publiccode = yaml.safe_load(sw["publiccodeYml"])
+            except:
+                continue
+
+            audience = publiccode.get("intendedAudience", {}).get("scope", [])
 
             i = 1
             for a in audience:
-                swid = "%s_%d" % (sw["slug"], i)
+                swid = "%s_%d" % (sw["id"], i)
                 self.add_timestamp_to_metrics(swid)
                 self.metrics[swid]["software_audiences"] = a
                 i += 1
