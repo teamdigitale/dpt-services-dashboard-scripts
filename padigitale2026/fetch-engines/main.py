@@ -5,7 +5,7 @@ from datetime import datetime
 import engines
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-enabled_engines = ['Newsletter', 'GAnalytics']
+enabled_engines = ['Newsletter']
 
 def compute_stats(args):
     for engine_name in enabled_engines:
